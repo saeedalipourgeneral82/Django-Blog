@@ -1,0 +1,149 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h3 class="mb-0">Edit Profile</h3>
+                    <p class="text-muted mt-2">Update your account information</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Username Field -->
+                        <div class="mb-4">
+                            <label for="{{ u_form.username.id_for_label }}" class="form-label fw-bold">
+                                Username
+                            </label>
+                            {{ u_form.username }}
+                            {% if u_form.username.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in u_form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="text-muted">Required. 150 characters or fewer.</small>
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="mb-4">
+                            <label for="{{ u_form.email.id_for_label }}" class="form-label fw-bold">
+                                Email
+                            </label>
+                            {{ u_form.email }}
+                            {% if u_form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in u_form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Profile Picture Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Profile Picture</label>
+                            <div class="d-flex flex-column flex-sm-row align-items-center gap-4">
+                                <!-- Current Profile Picture -->
+                                <div>
+                                    <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" 
+                                         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #dee2e6;">
+                                </div>
+                                
+                                <!-- Image Upload -->
+                                <div class="flex-grow-1 w-100">
+                                    {{ p_form.image }}
+                                    {% if p_form.image.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in p_form.image.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <small class="text-muted">Allowed formats: JPG, PNG, GIF. Max size: 2MB</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <!-- Bio Section 
+                        <div class="mb-4">
+                            <label for="{{ p_form.bio.id_for_label }}" class="form-label fw-bold">
+                                Bio
+                            </label>
+                            {{ p_form.bio }}
+                            <small class="text-muted d-block mt-1">Tell us a little about yourself</small>
+                            {% if p_form.bio.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in p_form.bio.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        -->
+                        
+                        <!-- Form Buttons -->
+                        <div class="d-flex gap-2 justify-content-end mt-4">
+                            <a href="{% url 'profile' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style Django form fields */
+    input, textarea, select {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+        color: #212529;
+        background-color: #fff;
+        border-color: #86b7fe;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    /* Style file input */
+    input[type="file"] {
+        padding: 0.5rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+    }
+    
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+    
+    /* Card hover effect */
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+    }
+</style>
+{% endblock content %}

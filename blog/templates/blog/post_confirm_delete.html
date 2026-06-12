@@ -1,0 +1,139 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Blur the background content */
+    .blur-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        z-index: 999;
+    }
+    
+    /* Centered confirmation card */
+    .delete-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
+        width: 90%;
+        max-width: 400px;
+    }
+    
+    .delete-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+    
+    .delete-card-header {
+        background: #dc3545;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .delete-card-header i {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+    
+    .delete-card-body {
+        padding: 24px;
+        text-align: center;
+    }
+    
+    .delete-card-footer {
+        padding: 16px 24px 24px;
+        display: flex;
+        gap: 12px;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        text-align: center;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+    
+    .post-title {
+        font-weight: 600;
+        color: #333;
+        margin: 10px 0;
+    }
+    
+    .warning-text {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 8px;
+    }
+</style>
+
+<!-- Blur overlay -->
+<div class="blur-background"></div>
+
+<!-- Confirmation Modal -->
+<div class="delete-modal">
+    <div class="delete-card">
+        <div class="delete-card-header">
+            <i class="bi bi-trash3"></i>
+            <h3 class="mb-0">Delete Post?</h3>
+        </div>
+        
+        <div class="delete-card-body">
+            <p class="mb-2 text-muted">You're about to delete:</p>
+            <div class="post-title">{{ object.title }}</div>
+            <div class="warning-text">
+                <i class="bi bi-exclamation-triangle"></i> This cannot be undone
+            </div>
+        </div>
+        
+        <div class="delete-card-footer">
+            <form method="POST" style="flex: 1;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-check-lg"></i> Yes, Delete
+                </button>
+            </form>
+            <a href="{% url 'post-detail' post.id %}" class="btn btn-secondary">
+                <i class="bi bi-x-lg"></i> Cancel
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<!-- Hide the original content (already blurred) -->
+{% endblock %}
